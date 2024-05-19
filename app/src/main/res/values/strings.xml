@@ -20,4 +20,8 @@
     <string name="click_here_to_add_latitude_and_longitude">Click here to add Latitude and Longitude</string>
     <string name="select_any_category">Select any Category</string>
     <string name="submit">Submit</string>
+    <string name="category">Category:</string>
+    <string name="navigate">Navigate</string>
+    <string name="monal">Monal</string>
+    <string name="reviews">Reviews:</string>
 </resources>
