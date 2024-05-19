@@ -13,4 +13,5 @@
     <string name="login">Login</string>
     <string name="please_signin_to_continue">Please signin to continue</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>
+    <string name="home_page">Home Page</string>
 </resources>
