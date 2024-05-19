@@ -5,7 +5,10 @@
     <color name="text_color">#eeeeee</color>
     <color name="textColor">#535353</color>
 
+    <color name="blue">#333F83</color>
     <color name="ly8white">#F7F7F7</color>
     <color name="yellow">#F0B74F</color>
+    <color name="grey">#554F4F</color>
+    <color name="background">#fff</color>
 
 </resources>
