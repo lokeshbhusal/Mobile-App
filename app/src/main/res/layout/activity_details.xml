@@ -49,8 +49,6 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/feedback"
         android:layout_width="wrap_content"
-
-
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
@@ -85,7 +83,7 @@
             android:layout_margin="@dimen/_20sdp"
             android:fontFamily="@font/kanit_medium"
             android:paddingTop="10dp"
-            android:text="Navigate"
+            android:text="@string/navigate"
             android:onClick="navigate"
             android:layout_gravity="end"
             android:background="@drawable/roundbutton"
@@ -103,7 +101,7 @@
             android:layout_marginBottom="25dp"
             android:fontFamily="@font/kanit_medium"
             android:paddingTop="8dp"
-            android:text="Monal"
+            android:text="@string/monal"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -118,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/kanit_medium"
                 android:paddingTop="8dp"
-                android:text="Category: "
+                android:text="@string/category"
                 android:textSize="18sp" />
 
             <TextView
@@ -164,7 +162,7 @@
             android:layout_marginStart="20dp"
             android:fontFamily="@font/kanit_bold"
             android:paddingTop="8dp"
-            android:text="Reviews: "
+            android:text="@string/reviews"
             android:textSize="25sp" />
 
         <androidx.recyclerview.widget.RecyclerView
