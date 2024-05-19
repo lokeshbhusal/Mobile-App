@@ -16,4 +16,7 @@
     <string name="home_page">Home Page</string>
     <string name="entertainment">Entertainment</string>
     <string name="description">Description:</string>
+    <string name="add_location">Add location</string>
+    <string name="click_here_to_add_latitude_and_longitude">Click here to add Latitude and Longitude</string>
+    <string name="select_any_category">Select any Category</string>
 </resources>
