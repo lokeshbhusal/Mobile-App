@@ -4,6 +4,7 @@
     <dimen name="_10sdp">10.00dp</dimen>
     <dimen name="_5sdp">5.00dp</dimen>
     <dimen name="_50sdp">50.00dp</dimen>
+    <dimen name="_120sdp">120.00dp</dimen>
 
 
 </resources>
