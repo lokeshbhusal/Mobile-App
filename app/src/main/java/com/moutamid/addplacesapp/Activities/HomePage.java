@@ -48,7 +48,7 @@ public class HomePage extends AppCompatActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         btnAdd = findViewById(R.id.btnAdd);
-        Config.checkApp(HomePage.this);
+       Config.checkApp(HomePage.this);
         // Obtain the SupportMapFragment and set this activity as the callback listener
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(this);

@@ -125,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:visibility="gone"
+android:visibility="gone"
             android:enabled="false"
             android:maxLength="9"
             android:layout_marginTop="10dp"
@@ -149,7 +149,7 @@
                 android:layout_marginLeft="29dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
-                android:text="@string/select_any_category"
+                android:text="Select any Category"
                 android:fontFamily="@font/kanit_bold"
                 android:textColor="@color/black"
                 android:layout_marginRight="24dp"
@@ -157,18 +157,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 />
             <Spinner
-                android:id="@+id/spinner"
+            android:id="@+id/spinner"
                 android:layout_below="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginRight="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
         </RelativeLayout>
         <TextView
@@ -181,13 +181,12 @@
             android:background="@drawable/edit_bg"
             android:backgroundTint="@color/yellow"
             android:fontFamily="@font/kanit_regular"
-            android:hint="@string/click_here_to_add_latitude_and_longitude"
+            android:hint="Click here to add Latitude and Logitude"
             android:padding="14dp"
             android:textColor="@color/black"
             android:gravity="center"
             android:textColorHint="@color/black"
             android:textSize="13dp" />
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnAddCatogry"
             android:layout_width="match_parent"
@@ -198,8 +197,9 @@
             android:backgroundTint="@color/black"
             android:background="@drawable/roundbutton"
             android:fontFamily="@font/kanit_regular"
-            android:text="@string/add_location"
+            android:text="Add location"
             android:textAllCaps="true"
+
             android:layout_marginBottom="@dimen/_20sdp"
             android:textColor="@color/yellow" />
 

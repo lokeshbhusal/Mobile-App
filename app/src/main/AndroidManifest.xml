@@ -17,7 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AddPlacesApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Activities.DetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.MapActivity"
+            android:exported="true"></activity>
         <activity
             android:name=".Activities.WelcomeActivity"
             android:exported="true">
@@ -27,6 +32,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Activities.SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.HomePage"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.AddPlacesActivity"
+            android:exported="true"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAuIxeEpQQgN84bBitDRksZTcLHtIKSAeY" />
     </application>
 
 </manifest>
