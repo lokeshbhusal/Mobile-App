@@ -33,9 +33,9 @@ import java.util.Objects;
 
 public class FeedBackDialogClass extends Dialog implements
         View.OnClickListener {
-    String name;
-    String key;
-    public Activity c;
+    String name; // The name of the user or place for which feedback is being collected
+    String key; // Firebase key for the location to update the feedback
+    public Activity c; // The activity from which the dialog is called
     public FeedBackDialogClass d;
     public TextView buttonSubmit;
     EditText editTextFeedback;
@@ -55,13 +55,14 @@ public class FeedBackDialogClass extends Dialog implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         setContentView(R.layout.improve);
+        // Initialize UI components
         buttonSubmit = (TextView) findViewById(R.id.buttonSubmit);
         close_btn = (ImageView) findViewById(R.id.close_btn);
         editTextFeedback = (EditText) findViewById(R.id.editTextFeedback);
         d = new FeedBackDialogClass(c, name, key);
         buttonSubmit.setOnClickListener(this);
         close_btn.setOnClickListener(this);
-
+        // Prevent the dialog from being cancelled when touched outside
         d.setCanceledOnTouchOutside(false);
 
     }
@@ -88,6 +89,7 @@ public class FeedBackDialogClass extends Dialog implements
                 HashMap<String, Object> ratingMap = new HashMap<>();
                 ratingMap.put("feedback", ratingModel.feedback);
                 ratingMap.put("name", name1);
+                // Save feedback to Firebase
                 FirebaseDatabase.getInstance().getReference()
                         .child("AddPlacesApp")
                         .child("Places")

@@ -32,9 +32,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
+        // Initialize the FusedLocationProviderClient for handling location updates
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        // Retrieve the map fragment and set up the map asynchronously
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -45,12 +45,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-
+        // Check if location permissions are granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // Enable user location layer on the map
             mMap.setMyLocationEnabled(true);
+            // Get the last known location of the user
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, location -> {
                         if (location != null) {
+                            // Move the map's camera to the current location if it's available
                             LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
                         } else {
@@ -58,12 +61,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         }
                     });
         } else {
+            // Request location permissions if not granted
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
-
+        // Set a listener for long click events on the map to show a dialog with coordinates
         mMap.setOnMapLongClickListener(this::showCoordinatesDialog);
     }
-
+    // Show a dialog with the coordinates of the long-pressed location on the map
     private void showCoordinatesDialog(LatLng latLng) {
         Config.lat = latLng.latitude;
         Config.lng = latLng.longitude;
@@ -81,6 +85,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Re-check permission and enable location layer if permission is granted
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mMap.setMyLocationEnabled(true);
                     fusedLocationClient.getLastLocation()

@@ -38,8 +38,10 @@ import com.moutamid.addplacesapp.R;
 import com.moutamid.addplacesapp.model.LocationModel;
 import com.squareup.picasso.Picasso;
 public class AddPlacesActivity extends AppCompatActivity {
+    // Constants
     public static final int GALARY_PICK = 1;
 
+    // UI Elements
     private EditText name, productDescription;
     private Button add, choose;
     private ImageView img;
@@ -49,6 +51,8 @@ public class AddPlacesActivity extends AppCompatActivity {
     private StorageTask mUploadTask;
     String category;
     TextView name_cat, editTextLat, editTextLng, add_lat_lng;
+
+    // Categories for the spinner
     private String[] categories = {
             "Hotel",
             "Restaurant",
@@ -67,6 +71,7 @@ public class AddPlacesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_place);
+        // Initializing UI components
         add_lat_lng = findViewById(R.id.add_lat_lng);
         editTextLat = findViewById(R.id.editTextLat);
         editTextLng = findViewById(R.id.editTextLng);
@@ -77,6 +82,7 @@ public class AddPlacesActivity extends AppCompatActivity {
         img = (ImageView) findViewById(R.id.CatogryImage);
         productDescription = findViewById(R.id.editTextDescription);
         spinner = (Spinner) findViewById(R.id.spinner);
+        // Hide lat and lng if coordinates are not set
         if (Config.lat == 0.0 && Config.lng == 0.0) {
             editTextLng.setVisibility(View.GONE);
             editTextLat.setVisibility(View.GONE);
@@ -133,7 +139,7 @@ public class AddPlacesActivity extends AppCompatActivity {
         });
     }
 
-
+    // Method to upload data to Firebase
     public void uploadData() {
         if (Config.lat == 0.0 || name.getText().toString().isEmpty() || productDescription.getText().toString().isEmpty() || imgUri == null) {
             Toast.makeText(AddPlacesActivity.this, "Please fill blank fields and locations", Toast.LENGTH_SHORT).show();
@@ -204,7 +210,7 @@ public class AddPlacesActivity extends AppCompatActivity {
         }
     }
 
-
+    // Method to upload the image to Firebase Storage
     public void backPress(View view) {
         onBackPressed();
     }
@@ -224,7 +230,7 @@ public class AddPlacesActivity extends AppCompatActivity {
 
         }
     }
-
+    // Custom method to show a toast message
     public void show_toast(String message, int type) {
         LayoutInflater inflater = getLayoutInflater();
 

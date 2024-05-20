@@ -39,7 +39,7 @@ public class RateDialogClass extends Dialog implements
     public TextView rate;
     RatingBar simpleRatingBar;
     ImageView close_btn;
-
+    // Constructor
     public RateDialogClass(Activity a, String name, String key) {
         super(a);
         // TODO Auto-generated constructor stub
@@ -54,6 +54,7 @@ public class RateDialogClass extends Dialog implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         setContentView(R.layout.rate_us);
+        // UI initialization
         rate = (TextView) findViewById(R.id.startbtn);
         close_btn = (ImageView) findViewById(R.id.close_btn);
         simpleRatingBar = (RatingBar) findViewById(R.id.simpleRatingBar);
@@ -89,7 +90,7 @@ public class RateDialogClass extends Dialog implements
                 HashMap<String, Object> ratingMap = new HashMap<>();
                 ratingMap.put("rating", ratingModel.rating);
                 ratingMap.put("name", name1);
-
+                // Firebase database update
                 FirebaseDatabase.getInstance().getReference()
                         .child("AddPlacesApp")
                         .child("Places")
