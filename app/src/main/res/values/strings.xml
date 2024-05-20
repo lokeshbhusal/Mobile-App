@@ -1,27 +1,6 @@
 <resources>
     <string name="app_name">AddPlacesApp</string>
-    <string name="find_your_way_discover_new_places">Find your way, discover new places</string>
-    <string name="let_s_go">Let\'s go!</string>
-    <string name="need">Need!</string>
-    <string name="create_account">Create Account</string>
-    <string name="name">Name</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="signup">Signup</string>
-    <string name="already_have_an_account_log_in">Already have an account? Log in</string>
-    <string name="login">Login</string>
-    <string name="please_signin_to_continue">Please signin to continue</string>
-    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>
-    <string name="home_page">Home Page</string>
-    <string name="entertainment">Entertainment</string>
-    <string name="description">Description:</string>
-    <string name="add_location">Add location</string>
-    <string name="click_here_to_add_latitude_and_longitude">Click here to add Latitude and Longitude</string>
-    <string name="select_any_category">Select any Category</string>
-    <string name="submit">Submit</string>
-    <string name="category">Category:</string>
-    <string name="navigate">Navigate</string>
-    <string name="monal">Monal</string>
-    <string name="reviews">Reviews:</string>
+    <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
+    <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
+
 </resources>

@@ -41,7 +41,8 @@
         <activity
             android:name=".Activities.HomePage"
             android:exported="false" />
-        <activity android:name=".Activities.AddPlacesActivity"
+        <activity
+            android:name=".Activities.AddPlacesActivity"
             android:exported="true"></activity>
 
         <meta-data

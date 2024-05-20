@@ -13,9 +13,9 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/kanit_extra_bold"
-        android:text="@string/home_page"
+        android:text="Home Page"
         android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textSize="30dp"
         android:textStyle="bold" />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAdd"
@@ -31,11 +31,13 @@
         android:fontFamily="@font/kanit_regular"
         android:text="Add new location"
         android:textAllCaps="true"
+
         android:layout_marginBottom="@dimen/_20sdp"
         android:textColor="@color/yellow" />
 
     <fragment
         android:id="@+id/map_fragment"
+
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -38,14 +38,13 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="65dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+android:layout_centerHorizontal="true"        android:layout_alignParentBottom="true"
         android:layout_marginBottom="566dp"
-        android:text="@string/need"
+        android:text="Need!"
         android:fontFamily="@font/kanit_extra_bold"
         android:textAlignment="center"
         android:textColor="@color/yellow"
-        android:textSize="35sp"
+        android:textSize="35dp"
         android:textStyle="bold" />
 
     <TextView
@@ -53,26 +52,27 @@
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="530dp"
-        android:text="@string/find_your_way_discover_new_places"
+
+        android:layout_centerHorizontal="true"          android:layout_marginBottom="530dp"
+        android:text="Find your way, discover new places"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:fontFamily="@font/kanit_medium"
-        android:textSize="17sp" />
+        android:textSize="17dp" />
 
     <Button
         android:id="@+id/startbtn"
         android:layout_width="187dp"
         android:layout_height="61dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+
+        android:layout_centerHorizontal="true"          android:layout_alignParentBottom="true"
         android:layout_marginBottom="464dp"
         android:backgroundTint="@color/yellow"
-        android:text="@string/let_s_go"
+        android:text="Let's go!"
         android:fontFamily="@font/kanit_medium"
+
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="20dp" />
 
 </RelativeLayout>
