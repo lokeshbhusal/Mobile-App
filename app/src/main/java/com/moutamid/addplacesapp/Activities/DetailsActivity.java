@@ -31,13 +31,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
+    // Model to store location details
     LocationModel locationModel;
+    // RecyclerView for displaying feedback
     RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        // Binding views from the layout
         ImageView placeImage = findViewById(R.id.place_image);
         TextView placeName = findViewById(R.id.place_name);
         TextView placeCategory = findViewById(R.id.place_category);
@@ -46,6 +50,7 @@ public class DetailsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Retrieve the locationModel from local storage
         locationModel = (LocationModel) Stash.getObject("currentLocationModel", LocationModel.class);
         List<RatingModel> feedbackList = new ArrayList<>();
 
@@ -63,18 +68,20 @@ public class DetailsActivity extends AppCompatActivity {
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                // Iterate through all feedback entries
                 for (DataSnapshot placeSnapshot : dataSnapshot.getChildren()) {
                     String name = placeSnapshot.child("name").getValue(String.class);
                     String rating = placeSnapshot.child("rating").getValue(String.class);
                     String feedback = placeSnapshot.child("feedback").getValue(String.class);
                     Log.d("rating", name + "  " + rating + "  " + feedback);
+                    // Add feedback to the list
                     if (feedback != null) {
                         feedbackList.add(new RatingModel(name, rating, feedback));
                     } else {
                         feedbackList.add(new RatingModel(name, rating, ""));
                     }
                 }
+                // Update visibility based on feedback presence
                 if (feedbackList.size() < 1) {
                     review_text.setVisibility(View.GONE);
                 } else {
@@ -86,12 +93,13 @@ public class DetailsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle error
+              // Log cancellation or handle error
             }
         });
 
     }
 
+    // Methods to handle user interactions for rating, feedback, navigation, and back navigation
     public void rating(View view) {
         RateDialogClass cdd = new RateDialogClass(DetailsActivity.this, locationModel.getName(), locationModel.getKey());
         cdd.show();

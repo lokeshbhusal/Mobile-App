@@ -36,7 +36,7 @@ import com.moutamid.addplacesapp.R;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
-
+    // UI references.
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
@@ -49,11 +49,13 @@ public class LoginActivity extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+        // If the user is already logged in, redirect to HomePage
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, HomePage.class));
             finish();
         }
         setContentView(R.layout.activity_login);
+        // Animation for the layout entrance
         Animation bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
@@ -63,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         LinearLayout main_layout = findViewById(R.id.main_layout);
         main_layout.setAnimation(bottomAnim);
         auth = FirebaseAuth.getInstance();
+        // Setup click listener for signup button to redirect to SignupActivity
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,13 +73,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
+        // Handling the login button click
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = inputEmail.getText().toString();
-                final String password = inputPassword.getText().toString();
+                String email = inputEmail.getText().toString().trim();
+                String password = inputPassword.getText().toString().trim();
 
+                // Validate if the email and password are not empty
                 if (TextUtils.isEmpty(email)) {
                     show_toast("Email address is not yet provided", 0);
                     return;
@@ -84,69 +88,66 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(password)) {
                     show_toast("Password is not yet provided", 0);
-
                     return;
                 }
 
+                // Initialize and display the loading dialog
+                Dialog loadingDialog = new Dialog(LoginActivity.this);
+                loadingDialog.setContentView(R.layout.loading);
+                Objects.requireNonNull(loadingDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(UCharacter.JoiningType.TRANSPARENT));
+                loadingDialog.setCancelable(false);
+                loadingDialog.show();
 
-                //authenticate user
+                // Authenticate user
                 auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                progressBar.setVisibility(View.GONE);
+                                // Ensure to dismiss the loading dialog regardless of the result
+                                loadingDialog.dismiss();
+
                                 if (!task.isSuccessful()) {
-                                    // there was an error
+                                    // There was an error
                                     if (password.length() < 6) {
                                         show_toast(getString(R.string.minimum_password), 0);
-
                                     } else {
                                         show_toast(getString(R.string.auth_failed), 0);
-
                                     }
                                 } else {
-                                    Dialog lodingbar = new Dialog(LoginActivity.this);
-                                    lodingbar.setContentView(R.layout.loading);
-                                    Objects.requireNonNull(lodingbar.getWindow()).setBackgroundDrawable(new ColorDrawable(UCharacter.JoiningType.TRANSPARENT));
-                                    lodingbar.setCancelable(false);
-                                    lodingbar.show();
+                                    // Authentication succeed
+                                    FirebaseDatabase.getInstance().getReference().child("AddPlacesApp").child("Users")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    String name = snapshot.child("name").getValue(String.class);
+                                                    Stash.put("name", name);
+                                                    show_toast("Successfully Logged In", 1);
+                                                    startActivity(new Intent(LoginActivity.this, HomePage.class));
+                                                    finish();
+                                                }
 
-                                    FirebaseDatabase.getInstance().getReference().child("AddPlacesApp").child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            String name = snapshot.child("name").getValue().toString();
-                                            Stash.put("name", name);
-                                            show_toast("Successfully Login", 1);
-                                            lodingbar.dismiss();
-                                            Intent intent = new Intent(LoginActivity.this, HomePage.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                    show_toast("Database error: " + error.getMessage(), 0);
+                                                }
+                                            });
                                 }
                             }
                         });
             }
         });
-    }
 
+    }
+    // Method to display custom toast messages
     public void show_toast(String message, int type) {
         LayoutInflater inflater = getLayoutInflater();
 
         View layout;
-        if (type == 0) {
+        if (type == 0) { // Error message layout
             layout = inflater.inflate(R.layout.toast_wrong,
                     (ViewGroup) findViewById(R.id.toast_layout_root));
-        } else {
+        } else { // Success message layou
             layout = inflater.inflate(R.layout.toast_right,
                     (ViewGroup) findViewById(R.id.toast_layout_root));
 

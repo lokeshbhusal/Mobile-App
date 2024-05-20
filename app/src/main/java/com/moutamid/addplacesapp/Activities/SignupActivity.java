@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.FirebaseDatabase;
 import com.moutamid.addplacesapp.R;
 import com.moutamid.addplacesapp.model.UserModel;
@@ -33,22 +34,23 @@ import java.util.Objects;
 
 
 public class SignupActivity extends AppCompatActivity {
-
+    // UI Components
     private EditText inputEmail, inputPassword, inputName, inputConfirmPassword;
     private Button btnSignUp;
     private TextView btnSignIn;
     private ProgressBar progressBar;
-    private FirebaseAuth auth;
-
+    private FirebaseAuth auth; // Firebase authentication instance
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        // Animations for UI elements
         Animation bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
         LinearLayout main_layout = findViewById(R.id.main_layout);
         main_layout.setAnimation(bottomAnim);
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+        // Initialize UI components
         inputName = (EditText) findViewById(R.id.name);
         inputConfirmPassword = (EditText) findViewById(R.id.confirm_password);
         btnSignIn = (TextView) findViewById(R.id.sign_in_button);
@@ -56,6 +58,7 @@ public class SignupActivity extends AppCompatActivity {
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        // Setup button listeners
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,12 +69,13 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Retrieve user inputs
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 String name = inputName.getText().toString().trim();
                 String confirm_password = inputConfirmPassword.getText().toString().trim();
                 Stash.put("name", name);
+                // Validation checks
                 if (TextUtils.isEmpty(name)) {
                     show_toast("Enter name", 0);
                     return;
@@ -102,42 +106,50 @@ public class SignupActivity extends AppCompatActivity {
                     return;
                 }
 
-//                progressBar.setVisibility(View.VISIBLE);
-                Dialog lodingbar = new Dialog(SignupActivity.this);
-                lodingbar.setContentView(R.layout.loading);
-                Objects.requireNonNull(lodingbar.getWindow()).setBackgroundDrawable(new ColorDrawable(UCharacter.JoiningType.TRANSPARENT));
-                lodingbar.setCancelable(false);
-                lodingbar.show();
+                //  progressBar.setVisibility(View.VISIBLE);
+                Dialog loadingBar = new Dialog(SignupActivity.this);
+                loadingBar.setContentView(R.layout.loading);
+                Objects.requireNonNull(loadingBar.getWindow()).setBackgroundDrawable(new ColorDrawable(UCharacter.JoiningType.TRANSPARENT));
+                loadingBar.setCancelable(false);
+                loadingBar.show();
 
-                //create user
+                // Create user in Firebase Auth
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressBar.setVisibility(View.GONE);
+                                loadingBar.dismiss();  // Dismiss loading dialog immediately on response
+
                                 if (!task.isSuccessful()) {
-                                    show_toast("Authentication failed." + task.getException(), 0);
+                                    if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                        show_toast("The email address is already in use by another account.", 0);
+                                    } else {
+                                        show_toast("Authentication failed." + task.getException().getMessage(), 0);
+                                    }
                                 } else {
-                                    UserModel userModel = new UserModel();
-                                    userModel.email = email;
-                                    userModel.name = name;
-                                    FirebaseDatabase.getInstance().getReference().child("AddPlacesApp").child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            show_toast("Account is created successfully", 1);
-                                            startActivity(new Intent(SignupActivity.this, HomePage.class));
-                                            lodingbar.dismiss();
-                                            finishAffinity();
-
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            lodingbar.dismiss();
-                                            show_toast("Something went wrong. Please try again", 0);
-                                        }
-                                    });
-
+                                    // User registered successfully
+                                    UserModel userModel = new UserModel(email, name);  // Assuming UserModel constructor
+                                    FirebaseDatabase.getInstance().getReference().child("AddPlacesApp").child("Users")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .setValue(userModel)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        show_toast("Account is created successfully", 1);
+                                                        startActivity(new Intent(SignupActivity.this, HomePage.class));
+                                                        finishAffinity();
+                                                    } else {
+                                                        show_toast("Failed to save user data: " + task.getException().getMessage(), 0);
+                                                    }
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    show_toast("Something went wrong. Please try again: " + e.getMessage(), 0);
+                                                }
+                                            });
                                 }
                             }
                         });
@@ -155,7 +167,7 @@ public class SignupActivity extends AppCompatActivity {
     public void back(View view) {
         onBackPressed();
     }
-
+    // Method to display custom toast messages
     public void show_toast(String message, int type) {
         LayoutInflater inflater = getLayoutInflater();
 

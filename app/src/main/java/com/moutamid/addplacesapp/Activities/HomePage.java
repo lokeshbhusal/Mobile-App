@@ -36,7 +36,7 @@ public class HomePage extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "HomePage";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
+    // Map and Firebase database reference
     private GoogleMap mMap;
     private DatabaseReference dbRef; // Reference for Realtime Database
     private FusedLocationProviderClient fusedLocationClient;
@@ -48,12 +48,13 @@ public class HomePage extends AppCompatActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         btnAdd = findViewById(R.id.btnAdd);
-       Config.checkApp(HomePage.this);
+        // Initialize necessary configurations on start
+        Config.checkApp(HomePage.this);
         // Obtain the SupportMapFragment and set this activity as the callback listener
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(this);
 
-        // Initialize Firebase Realtime Database
+        // Setup database reference to store and retrieve places
         dbRef = FirebaseDatabase.getInstance().getReference().child("AddPlacesApp")
                 .child("Places");
 
@@ -106,14 +107,14 @@ public class HomePage extends AppCompatActivity implements OnMapReadyCallback {
         LatLng latLng = new LatLng(Double.parseDouble(place.getLat()), Double.parseDouble(place.getLng()));
         Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(place.getName()));
 
-        // Set marker click listener
+        // Set tag for marker to store place details
         marker.setTag(place);
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 LocationModel place = (LocationModel) marker.getTag();
                 showPlaceDetails(place);  // Call method to show details
-                return true;  // Consume click event
+                return true;  // Handle the click event
             }
         });
     }
@@ -129,6 +130,7 @@ public class HomePage extends AppCompatActivity implements OnMapReadyCallback {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    // If permission granted, enable location and move to current location
                     mMap.setMyLocationEnabled(true);
                     moveToCurrentLocation(); // Move to current location after permission is granted
                 }
@@ -137,7 +139,7 @@ public class HomePage extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
     }
-
+    // Move camera to current location of the user
     private void moveToCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
